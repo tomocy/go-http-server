@@ -7,14 +7,14 @@ import (
 	"github.com/go-chi/chi"
 )
 
-type Server struct {
-	router chi.Router
-}
-
 func New() *Server {
 	return &Server{
 		router: chi.NewRouter(),
 	}
+}
+
+type Server struct {
+	router chi.Router
 }
 
 func (s *Server) ListenAndServe(addr string) error {
