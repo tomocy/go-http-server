@@ -7,6 +7,6 @@ import (
 
 func main() {
 	config.Must(config.LoadConfig("./config.yml"))
-	server := server.New()
+	server := server.New("./public")
 	server.ListenAndServe(config.Current.Addr)
 }
