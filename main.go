@@ -1,33 +1,27 @@
 package main
 
 import (
-	"errors"
-	"fmt"
-	"os"
+	"flag"
 
-	"github.com/tomocy/server/config"
 	"github.com/tomocy/server/server"
 )
 
 func main() {
-	root, err := parseRoot()
-	if err != nil {
-		showHelp()
-		return
-	}
-	config.Must(config.LoadConfig("./config.yml"))
-	server := server.New(root)
-	server.ListenAndServe(config.Current.Addr)
+	conf := parseConfig()
+	server := server.New(conf.root)
+	server.ListenAndServe(conf.addr)
 }
 
-func parseRoot() (string, error) {
-	if len(os.Args) < 2 {
-		return "", errors.New("root path is not specified")
-	}
+func parseConfig() *config {
+	conf := new(config)
+	flag.StringVar(&conf.root, "root", "./", "root of static files to be served")
+	flag.StringVar(&conf.addr, "addr", ":80", "address of server")
+	flag.Parse()
 
-	return os.Args[1], nil
+	return conf
 }
 
-func showHelp() {
-	fmt.Print("Usage of ./server:\n\t./server ROOT\n\n")
+type config struct {
+	root string
+	addr string
 }
