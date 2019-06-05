@@ -21,7 +21,7 @@ type Server struct {
 
 func (s *Server) ListenAndServe(addr string) error {
 	s.registerRoutes()
-	log.Printf("listen and serve on %s\n", addr)
+	log.Printf("listen and serve files in %s on %s\n", s.root, addr)
 	return http.ListenAndServe(addr, s.router)
 }
 
