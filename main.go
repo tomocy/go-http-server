@@ -2,6 +2,8 @@ package main
 
 import (
 	"flag"
+	"fmt"
+	"os"
 
 	"github.com/tomocy/server/server"
 )
@@ -9,7 +11,10 @@ import (
 func main() {
 	conf := parseConfig()
 	server := server.New(conf.root)
-	server.ListenAndServe(conf.addr)
+	if err := server.ListenAndServe(conf.addr); err != nil {
+		fmt.Fprintf(os.Stderr, "failed to listen and serve: %v", err)
+		os.Exit(1)
+	}
 }
 
 func parseConfig() *config {
